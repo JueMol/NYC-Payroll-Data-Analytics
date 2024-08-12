@@ -1,0 +1,38 @@
+{
+	"name": "ls_summary_ext_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_datalake_project",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "summarydataExtTable.txt",
+				"folderPath": "stagingdirectory/dirstaging/summary",
+				"fileSystem": "synapsefilesystem4"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "AgencyName",
+				"type": "String"
+			},
+			{
+				"name": "FiscalYear",
+				"type": "String"
+			},
+			{
+				"name": "TotalPaid",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

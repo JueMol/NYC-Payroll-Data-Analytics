@@ -1,0 +1,27 @@
+{
+	"name": "ds_sql_nycagencymaster",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb_project",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "AgencyID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AgencyName",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "NYC_AgencyMaster"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

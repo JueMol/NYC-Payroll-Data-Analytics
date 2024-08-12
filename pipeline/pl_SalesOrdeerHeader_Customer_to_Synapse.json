@@ -1,0 +1,80 @@
+{
+	"name": "pl_SalesOrdeerHeader_Customer_to_Synapse",
+	"properties": {
+		"activities": [
+			{
+				"name": "df_salesorderheader",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dfl_salesorderheader",
+						"type": "DataFlowReference"
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "ls_datalake_storage",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "stagingcontainer/stagingdirectory"
+					},
+					"integrationRuntime": {
+						"referenceName": "IRWestUS",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "df_customer",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "df_salesorderheader",
+						"dependencyConditions": [
+							"Skipped",
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dfl_customer",
+						"type": "DataFlowReference"
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "ls_datalake_storage",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "stagingcontainer/stagingdirectory"
+					},
+					"integrationRuntime": {
+						"referenceName": "IRWestUS",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-08-07T16:32:30Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

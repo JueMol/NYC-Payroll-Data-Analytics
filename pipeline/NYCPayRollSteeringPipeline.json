@@ -1,0 +1,208 @@
+{
+	"name": "NYCPayRollSteeringPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "dfl_EmpMasterFromCSVToSQL",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dfl_EmpMasterFromCSVToSQL",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "IRWestUS",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "dfl_TitleMasterfFomCSVtoSQL",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dfl_TitleMasterfFomCSVtoSQL",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "IRWestUS",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "dfl_AgencyMasterfFomCSVtoSQL",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dfl_AgencyMasterfFomCSVtoSQL",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "IRWestUS",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "dfl_SyncPayroll2020FromCSVtoSQL",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "dfl_EmpMasterFromCSVToSQL",
+						"dependencyConditions": [
+							"Completed"
+						]
+					},
+					{
+						"activity": "dfl_TitleMasterfFomCSVtoSQL",
+						"dependencyConditions": [
+							"Completed"
+						]
+					},
+					{
+						"activity": "dfl_AgencyMasterfFomCSVtoSQL",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dfl_SyncPayroll2020FromCSVtoSQL",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "IRWestUS",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "dfl_SyncPayroll2021FromCSVtoSQL",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "dfl_EmpMasterFromCSVToSQL",
+						"dependencyConditions": [
+							"Completed"
+						]
+					},
+					{
+						"activity": "dfl_TitleMasterfFomCSVtoSQL",
+						"dependencyConditions": [
+							"Completed"
+						]
+					},
+					{
+						"activity": "dfl_AgencyMasterfFomCSVtoSQL",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dfl_SyncPayroll2021FromCSVtoSQL",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "IRWestUS",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "dfl_Dataflow_Summary",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "dfl_SyncPayroll2020FromCSVtoSQL",
+						"dependencyConditions": [
+							"Completed"
+						]
+					},
+					{
+						"activity": "dfl_SyncPayroll2021FromCSVtoSQL",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dfl_Dataflow_Summary",
+						"type": "DataFlowReference",
+						"parameters": {
+							"dataflow_param_fiscalyear": "2021"
+						}
+					},
+					"integrationRuntime": {
+						"referenceName": "IRWestUS",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-08-12T15:04:57Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
